@@ -133,18 +133,31 @@
 
       // Minta pairing code setelah connecting — timing yang benar
       if (
-        connection === "open" &&
+        connection === "connecting" &&
         !sock.authState.creds.registered &&
         !pairingAsked
       ) {
         pairingAsked = true;
-        await delay(2000);
+        // Tunggu sampai koneksi benar-benar siap sebelum minta pairing code
+        await new Promise(resolve => setTimeout(resolve, 5000));
         try {
           console.log(chalk.white.bold("\n– Silakan masukkan nomor WhatsApp (contoh: 628xxxx)"));
           const phoneNumber = await question(chalk.green.bold(`– Nomor Anda: `));
-          const code = await sock.requestPairingCode(phoneNumber.replace(/[^0-9]/g, ""));
-          console.log(chalk.green.bold(`\n– Kode Pairing: `) + chalk.yellow.bold(code));
-          console.log(chalk.white.bold("– Masukkan kode di WhatsApp → Perangkat Tertaut → Tautkan dengan nomor telepon\n"));
+          const clean = phoneNumber.replace(/[^0-9]/g, "");
+          let retries = 3;
+          while (retries > 0) {
+            try {
+              const code = await sock.requestPairingCode(clean);
+              console.log(chalk.green.bold(`\n– Kode Pairing: `) + chalk.yellow.bold(code));
+              console.log(chalk.white.bold("– Masukkan kode di WhatsApp → Perangkat Tertaut → Tautkan dengan nomor telepon\n"));
+              break;
+            } catch (err) {
+              retries--;
+              if (retries === 0) throw err;
+              console.log(chalk.yellow.bold(`– Mencoba ulang... (${retries} sisa)`));
+              await new Promise(r => setTimeout(r, 3000));
+            }
+          }
         } catch (e) {
           console.log(chalk.red.bold("\n– Gagal mendapat kode pairing: " + e.message));
           console.log(chalk.yellow.bold("– Restart: node index.js"));
