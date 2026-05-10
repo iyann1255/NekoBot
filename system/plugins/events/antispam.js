@@ -24,7 +24,7 @@ async function events(m, { sock, Func }) {
   if (spamTracker[key].count >= 5) {
     try {
       await sock.sendMessage(m.cht, {
-        text: `*🚫 Anti Spam Terdeteksi!*\n\n> @${m.sender.split("@")[0]} telah mengirim pesan terlalu cepat dan dikick otomatis.`,
+        text: `*🚫 Anti Spam Terdeteksi!*\n\n> @${m.sender.split("@")[0]} terdeteksi spam dan telah dikick otomatis dari grup *${m.metadata.subject}*.`,
         mentions: [m.sender],
       });
       await sock.groupParticipantsUpdate(m.cht, [m.sender], "remove");
