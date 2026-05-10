@@ -123,22 +123,35 @@
       store,    
     );
     store.bind(sock.ev);
-    if (!sock.authState.creds.registered) {
-      console.log(
-        chalk.white.bold(
-          "- Silakan masukkan nomor WhatsApp Anda, misalnya +628xxxx",
-        ),
-      );
-      const phoneNumber = await question(chalk.green.bold(`– Nomor Anda: `));
-      const code = await sock.requestPairingCode(phoneNumber);
-      setTimeout(() => {
-        console.log(chalk.white.bold("- Kode Pairing Anda: " + code));
-      }, 3000);
-    }
+
+    // Flag agar pairing hanya ditanya sekali
+    let pairingAsked = false;
 
     //=====[ Pembaruan Koneksi ]======
     sock.ev.on("connection.update", async (update) => {
       const { connection, lastDisconnect } = update;
+
+      // Minta pairing code setelah connecting — timing yang benar
+      if (
+        connection === "connecting" &&
+        !sock.authState.creds.registered &&
+        !pairingAsked
+      ) {
+        pairingAsked = true;
+        await delay(3000);
+        try {
+          console.log(chalk.white.bold("\n– Silakan masukkan nomor WhatsApp (contoh: 628xxxx)"));
+          const phoneNumber = await question(chalk.green.bold(`– Nomor Anda: `));
+          const code = await sock.requestPairingCode(phoneNumber.replace(/[^0-9]/g, ""));
+          console.log(chalk.green.bold(`\n– Kode Pairing: `) + chalk.yellow.bold(code));
+          console.log(chalk.white.bold("– Masukkan kode di WhatsApp → Perangkat Tertaut → Tautkan dengan nomor telepon\n"));
+        } catch (e) {
+          console.log(chalk.red.bold("\n– Gagal mendapat kode pairing: " + e.message));
+          console.log(chalk.yellow.bold("– Coba jalankan ulang: node index.js"));
+          process.exit(1);
+        }
+      }
+
       if (connection === "close") {
         const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
         if (lastDisconnect.error == "Error: Stream Errored (unknown)") {
