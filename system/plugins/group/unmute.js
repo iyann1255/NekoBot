@@ -13,13 +13,11 @@ module.exports = {
       .groupSettingUpdate(m.cht, "not_announcement")
       .then(() =>
         m.reply(
-          `*✅ Grup Berhasil Dibuka!*\n\n> 🔊 Sekarang semua member dapat mengirim pesan.\n\n📌 _Gunakan *mute* untuk membisukan kembali._`
+          `*✅ Grup Berhasil Dibuka!*\n\n> 🔊 Semua member dapat mengirim pesan.\n\n> 📌 _Gunakan *mute* untuk membisukan kembali._`
         )
       )
       .catch(() =>
-        m.reply(
-          `*❌ Gagal Membuka Grup!*\n\n> Pastikan bot memiliki hak admin.`
-        )
+        m.reply(`*❌ Gagal Membuka Grup!*\n\n> Pastikan bot memiliki hak admin.`)
       );
   },
 };

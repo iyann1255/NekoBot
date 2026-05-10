@@ -10,8 +10,7 @@ module.exports = {
   async run(m, { sock, text }) {
     const grup = m.metadata;
     const members = grup.participants;
-    const mentions = members.map(p => p.id);
-
+    const mentions = members.map((p) => p.id);
     const pesan = text || "📢 Perhatian semua member!";
 
     let teks = `*– 乂 Tag All Member*\n\n`;

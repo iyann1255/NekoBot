@@ -28,7 +28,7 @@ module.exports = {
       no++;
     }
 
-    teks += `\n> 👑 Owner  🛡️ Admin  👤 Member`;
+    teks += `\n> 👑 Owner  |  🛡️ Admin  |  👤 Member`;
     m.reply(teks);
   },
 };

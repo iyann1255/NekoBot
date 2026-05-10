@@ -13,13 +13,11 @@ module.exports = {
       .groupSettingUpdate(m.cht, "announcement")
       .then(() =>
         m.reply(
-          `*✅ Grup Berhasil Dibisukan!*\n\n> 🔇 Sekarang hanya admin yang dapat mengirim pesan.\n\n📌 _Gunakan *unmute* untuk membuka kembali._`
+          `*✅ Grup Berhasil Dibisukan!*\n\n> 🔇 Hanya admin yang dapat mengirim pesan.\n\n> 📌 _Gunakan *unmute* untuk membuka kembali._`
         )
       )
       .catch(() =>
-        m.reply(
-          `*❌ Gagal Membisukan Grup!*\n\n> Pastikan bot memiliki hak admin.`
-        )
+        m.reply(`*❌ Gagal Membisukan Grup!*\n\n> Pastikan bot memiliki hak admin.`)
       );
   },
 };

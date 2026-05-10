@@ -11,8 +11,10 @@ module.exports = {
     const rules = group?.rules;
 
     if (!rules)
-      throw `*⚠️ Belum ada peraturan yang diatur!*\n\n> Admin dapat mengatur dengan:\n> *setrules [isi peraturan]*`;
+      throw `*⚠️ Belum ada peraturan yang diatur!*\n\n> Admin dapat mengatur dengan:\n> *.setrules [isi peraturan]*`;
 
-    m.reply(`*– 乂 Peraturan Grup*\n> *📌 ${m.metadata.subject}*\n> ${"─".repeat(20)}\n\n${rules}`);
+    m.reply(
+      `*– 乂 Peraturan Grup*\n> *📌 ${m.metadata.subject}*\n> ${"─".repeat(20)}\n\n${rules}`
+    );
   },
 };

@@ -7,13 +7,13 @@ module.exports = {
     admin: true,
   },
   description: "🚫 Aktifkan/nonaktifkan anti spam di grup",
-  async run(m, { sock, text }) {
+  async run(m, { sock, Func, text }) {
     const group = db.list().group[m.cht];
     const status = group?.antispam;
 
     if (!text) {
       return m.reply(
-        `*– 乂 Anti Spam*\n\n> *Status:* ${status ? "✅ Aktif" : "❌ Nonaktif"}\n\n> Gunakan:\n> • *antispam on* → aktifkan\n> • *antispam off* → nonaktifkan\n\n📌 _Member yang kirim pesan 5x dalam 5 detik akan dikick otomatis._`
+        `*– 乂 Anti Spam*\n\n> *Status:* ${Func.switcher(status, "✅ Aktif", "❌ Nonaktif")}\n\n> *Penggunaan:*\n> • *antispam on* → aktifkan\n> • *antispam off* → nonaktifkan\n\n> 📌 _Member yang kirim 5 pesan dalam 5 detik akan dikick otomatis._`
       );
     }
 
@@ -24,7 +24,7 @@ module.exports = {
       db.list().group[m.cht].antispam = false;
       m.reply(`*❌ Anti Spam Dinonaktifkan!*`);
     } else {
-      m.reply(`*⚠️ Format Salah!*\n\n> Gunakan: *antispam on/off*`);
+      throw `*⚠️ Format Salah!*\n\n> Gunakan: *antispam on/off*`;
     }
   },
 };

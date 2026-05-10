@@ -8,10 +8,10 @@ module.exports = {
   description: "🛡️ Tampilkan list semua admin grup",
   async run(m, { sock }) {
     const grup = m.metadata;
-    const admins = grup.participants.filter(p => p.admin);
+    const admins = grup.participants.filter((p) => p.admin);
 
     if (admins.length === 0)
-      return m.reply("*❌ Tidak ada admin di grup ini!*");
+      return m.reply(`*❌ Tidak ada admin di grup ini!*`);
 
     let teks = `*– 乂 Daftar Admin Grup*\n`;
     teks += `> *📌 Grup:* ${grup.subject}\n`;
