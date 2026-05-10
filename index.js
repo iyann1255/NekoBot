@@ -133,12 +133,12 @@
 
       // Minta pairing code setelah connecting — timing yang benar
       if (
-        connection === "connecting" &&
+        connection === "open" &&
         !sock.authState.creds.registered &&
         !pairingAsked
       ) {
         pairingAsked = true;
-        await delay(3000);
+        await delay(2000);
         try {
           console.log(chalk.white.bold("\n– Silakan masukkan nomor WhatsApp (contoh: 628xxxx)"));
           const phoneNumber = await question(chalk.green.bold(`– Nomor Anda: `));
@@ -147,8 +147,8 @@
           console.log(chalk.white.bold("– Masukkan kode di WhatsApp → Perangkat Tertaut → Tautkan dengan nomor telepon\n"));
         } catch (e) {
           console.log(chalk.red.bold("\n– Gagal mendapat kode pairing: " + e.message));
-          console.log(chalk.yellow.bold("– Coba jalankan ulang: node index.js"));
-          process.exit(1);
+          console.log(chalk.yellow.bold("– Restart: node index.js"));
+          pairingAsked = false;
         }
       }
 
